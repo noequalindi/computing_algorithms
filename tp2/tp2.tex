@@ -10,6 +10,15 @@
 \usepackage{booktabs}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Computación, Algoritmos y Estructuras de Datos - FIUBA}
+\rhead{TP2 - Divide y Vencerás}
+\cfoot{\thepage}
 
 \lstset{
   basicstyle=\ttfamily\small,
@@ -18,12 +27,36 @@
   columns=fullflexible
 }
 
-\title{TP2 - Closest Pair (Divide y Vencerás)}
-\author{Noelia Melina Qualindi \\ SIU: a1411}
-\date{\today}
-
 \begin{document}
-\maketitle
+
+\begin{titlepage}
+    \centering
+
+    \includegraphics[width=0.45\textwidth]{uba.png}\\[1cm]
+
+    {\Large \bfseries Universidad de Buenos Aires (FIUBA)}\\[0.2cm]
+    {\large Maestría en Inteligencia Artificial}\\[1cm]
+
+    \rule{\textwidth}{1.2pt}\\[0.4cm]
+    {\Huge \bfseries Trabajo Práctico 2}\\[0.2cm]
+    {\LARGE \bfseries Closest Pair of Points (Divide y Vencerás)}\\[0.2cm]
+    \rule{\textwidth}{1.2pt}\\[1.2cm]
+
+    \begin{tabular}{rl}
+        \textbf{Materia:} & Computación, Algoritmos y Estructuras de Datos \\
+        \textbf{Docente:} & Dr. Lic. Camilo Argoty \\
+        \textbf{Alumna:} & Esp. Lic. Noelia Qualindi \\
+        \textbf{SIU:} & a1411 \\
+    \end{tabular}\\[10cm]
+
+    {\large Repositorio del trabajo:\\[0.2cm]}
+    \url{https://github.com/noequalindi/computing_algorithms/tree/main/tp2}\\[2cm]
+
+\end{titlepage}
+
+\setcounter{page}{1}
+
+% ---- CONTENIDO TP2 DESDE ACÁ ----
 
 \section{Enunciado elegido}
 Se resuelve el punto 3 del TP2: dado un conjunto de puntos $P \subset \mathbb{R}^2$, encontrar una pareja $(p^\*,q^\*)$ que minimice la distancia euclídea $d(p,q)$, con complejidad $O(n\log n)$.

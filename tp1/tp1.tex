@@ -10,7 +10,15 @@
 \usepackage{booktabs}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{verbatim}
 \usepackage{graphicx}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Computación, Algoritmos y Estructuras de Datos - FIUBA}
+\rhead{TP1 - Máquina de Turing}
+\cfoot{\thepage}
 
 \lstset{
   basicstyle=\ttfamily\small,
@@ -19,12 +27,35 @@
   columns=fullflexible
 }
 
-\title{TP1 - Máquina de Turing: Suma Binaria}
-\author{Noelia Melina Qualindi \\ SIU: a1411}
-\date{\today}
-
 \begin{document}
-\maketitle
+
+\begin{titlepage}
+    \centering
+
+    \includegraphics[width=0.45\textwidth]{uba.png}\\[1cm]
+
+    {\Large \bfseries Universidad de Buenos Aires (FIUBA)}\\[0.2cm]
+    {\large Maestría en Inteligencia Artificial}\\[1cm]
+
+    \rule{\textwidth}{1.2pt}\\[0.4cm]
+    {\Huge \bfseries Trabajo Práctico 1}\\[0.2cm]
+    {\LARGE \bfseries Máquina de Turing: suma de dos números en binario}\\[0.2cm]
+    \rule{\textwidth}{1.2pt}\\[1.2cm]
+
+    \begin{tabular}{rl}
+        \textbf{Materia:} & Computación, Algoritmos y Estructuras de Datos \\
+        \textbf{Docente:} & Dr. Lic. Camilo Argoty \\
+        \textbf{Alumna:} & Esp. Lic. Noelia Qualindi \\
+        \textbf{SIU:} & a1411 \\
+    \end{tabular}\\[10cm]
+
+    {\large Repositorio del trabajo:\\[0.2cm]}
+    \url{https://github.com/noequalindi/computing_algorithms/tree/main/tp1}\\[2cm]
+
+\end{titlepage}
+
+% Si querés que la página 1 sea la primera del contenido:
+\setcounter{page}{1}
 
 \section{Enunciado elegido}
 Según el último dígito del SIU (a1411), corresponde el punto 1 del TP1: \emph{suma de dos números en binario}.
@@ -147,7 +178,7 @@ donde la cinta de salida contiene el resultado correcto de la suma.
 \section{Repositorio}
 El código fuente y evidencia se entregan vía repositorio:
 \begin{center}
-\url{https://github.com/noequalindi/computing_algorithms/tree/main/tp1}
+\url{https://github.com/noeliaqualindi/computing_algorithms}
 \end{center}
 
 \end{document}

@@ -1,0 +1,203 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Computación, Algoritmos y Estructuras de Datos - FIUBA}
+\rhead{TP3 - Needleman--Wunsch}
+\cfoot{\thepage}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible
+}
+
+
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+
+    % Logo (ajustá ruta y tamaño)
+    \includegraphics[width=0.45\textwidth]{uba.png}\\[1cm]
+
+    {\Large \bfseries Universidad de Buenos Aires (FIUBA)}\\[0.2cm]
+    {\large Maestría en Inteligencia Artificial}\\[1cm]
+
+    \rule{\textwidth}{1.2pt}\\[0.4cm]
+    {\Huge \bfseries Trabajo Práctico 3}\\[0.2cm]
+    {\LARGE \bfseries Needleman--Wunsch (Alineación Global)}\\[0.2cm]
+    \rule{\textwidth}{1.2pt}\\[1.2cm]
+
+    \begin{tabular}{rl}
+        \textbf{Materia:} & Computación, Algoritmos y Estructuras de Datos \\
+        \textbf{Docente:} & Dr. Lic. Camilo Argoty \\
+        \textbf{Alumna:} & Esp. Lic. Noelia Qualindi \\
+        \textbf{SIU:} & a1411 \\
+    \end{tabular}\\[10cm]  % Espacio después de la tabla
+
+    % Repositorio abajo
+    {\large Repositorio del trabajo:\\[0.2cm]}
+    \url{https://github.com/noequalindi/computing_algorithms/tree/main/tp3}\\[2cm]  % Espacio más grande antes de finalizar el título
+    
+\end{titlepage}
+
+\section{Parte 1: Conceptos teóricos}
+
+\subsection{Secuencias de nucleótidos}
+Una secuencia de nucleótidos es una cadena sobre un alfabeto finito, típicamente $\{A,C,G,T\}$ para ADN (o $\{A,C,G,U\}$ para ARN). Compararlas permite identificar similitudes, mutaciones (sustituciones, inserciones, deleciones) y relaciones evolutivas.
+
+\subsection{Alineación de secuencias}
+Un alineamiento inserta huecos (gaps) ``-'' para poner en correspondencia posiciones entre dos secuencias.
+\begin{itemize}
+  \item \textbf{Alineación global}: alinea de extremo a extremo (se fuerza cubrir toda la longitud).
+  \item \textbf{Alineación local}: busca el segmento más similar (no necesariamente usa toda la secuencia).
+\end{itemize}
+En un alineamiento aparecen:
+\begin{itemize}
+  \item \emph{matches}: misma letra,
+  \item \emph{mismatches}: letras distintas,
+  \item \emph{gaps}: inserciones/deleciones modeladas con ``-''.
+\end{itemize}
+
+\subsection{Modelo de puntuación}
+Se usa un esquema simple:
+\begin{itemize}
+  \item Match: $+1$
+  \item Mismatch: $-1$
+  \item Gap: $-2$
+\end{itemize}
+(En modelos más realistas, se distinguen penalizaciones de apertura/extensión de gap; aquí se usa penalización constante por gap.)
+
+\subsection{Algoritmo de Needleman--Wunsch}
+Needleman--Wunsch resuelve alineación global mediante programación dinámica:
+\begin{itemize}
+  \item Construye una matriz $F$ de tamaño $(n+1)\times(m+1)$.
+  \item Inicializa primera fila/columna acumulando gaps.
+  \item Usa la recurrencia:
+  \[
+  F[i,j]=\max\begin{cases}
+  F[i-1,j-1] + s(x_i,y_j) \\
+  F[i-1,j] + \text{gap} \\
+  F[i,j-1] + \text{gap}
+  \end{cases}
+  \]
+  \item Luego aplica \emph{traceback} desde $F[n,m]$ para recuperar un alineamiento óptimo.
+\end{itemize}
+El puntaje óptimo de alineación global queda en la celda inferior derecha $F[n,m]$.
+
+\subsection{Referencia}
+Needleman, S. B., \& Wunsch, C. D. (1970). \emph{A general method applicable to the search for similarities in the amino acid sequence of two proteins}. Journal of Molecular Biology, 48(3), 443--453.
+
+\section{Parte 2: Implementación}
+Se implementó desde cero Needleman--Wunsch en Python con el esquema de puntuación indicado. Para cada par de secuencias el programa imprime:
+\begin{itemize}
+  \item matriz completa de puntuación,
+  \item un alineamiento global óptimo,
+  \item puntaje final.
+\end{itemize}
+
+\subsection{Cómo correr}
+\begin{lstlisting}
+cd tp3
+python tp3_needleman_wunsch.py --examples
+\end{lstlisting}
+
+\section{Evidencia de ejecución (salidas del programa)}
+
+\subsection{Ejecución con tres parejas}
+A continuación se muestra la salida obtenida al ejecutar el comando \texttt{--examples}. Se incluyen las matrices completas, los alineamientos óptimos y el puntaje final de cada caso.
+\newpage
+\begin{verbatim}
+python tp3_needleman_wunsch.py --examples
+
+============================================================
+Sequence 1: GATTACA
+Sequence 2: GCATGCU
+Score matrix:
+      _   G   C   A   T   G   C   U
+  _   0  -2  -4  -6  -8 -10 -12 -14
+  G  -2   1  -1  -3  -5  -7  -9 -11
+  A  -4  -1   0   0  -2  -4  -6  -8
+  T  -6  -3  -2  -1   1  -1  -3  -5
+  T  -8  -5  -4  -3   0   0  -2  -4
+  A -10  -7  -6  -3  -2  -1  -1  -3
+  C -12  -9  -6  -5  -4  -3   0  -2
+  A -14 -11  -8  -5  -6  -5  -2  -1
+
+Optimal alignment (global):
+GATTACA
+GCATGCU
+Total score: -1
+============================================================
+
+============================================================
+Sequence 1: ACGT
+Sequence 2: ACCT
+Score matrix:
+    _  A  C  C  T
+ _  0 -2 -4 -6 -8
+ A -2  1 -1 -3 -5
+ C -4 -1  2  0 -2
+ G -6 -3  0  1 -1
+ T -8 -5 -2 -1  2
+
+Optimal alignment (global):
+ACGT
+ACCT
+Total score: 2
+============================================================
+
+============================================================
+Sequence 1: ATGCT
+Sequence 2: AGCT
+Score matrix:
+      _   A   G   C   T
+  _   0  -2  -4  -6  -8
+  A  -2   1  -1  -3  -5
+  T  -4  -1   0  -2  -2
+  G  -6  -3   0  -1  -3
+  C  -8  -5  -2   1  -1
+  T -10  -7  -4  -1   2
+
+Optimal alignment (global):
+ATGCT
+A-GCT
+Total score: 2
+============================================================
+\end{verbatim}
+
+\subsection{Verificación del puntaje del Caso 1}
+En el Caso 1 se obtuvo un alineamiento sin gaps:
+\[
+\texttt{GATTACA}\quad\text{vs}\quad\texttt{GCATGCU}.
+\]
+Con match $=+1$ y mismatch $=-1$, el puntaje total es:
+\[
+(+1) + (-1) + (-1) + (+1) + (-1) + (+1) + (-1) = -1,
+\]
+lo cual coincide con el valor reportado por el algoritmo y con la celda $F[n,m]$ de la matriz de puntuación.
+
+\subsection{Repositorio}
+El código fuente y salidas reproducibles se entregan vía repositorio:
+\begin{center}
+\url{https://github.com/noequalindi/computing_algorithms/tree/main/tp3}
+\end{center}
+
+\end{document}
