@@ -1,0 +1,153 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible
+}
+
+\title{TP1 - Máquina de Turing: Suma Binaria}
+\author{Noelia Melina Qualindi \\ SIU: a1411}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Enunciado elegido}
+Según el último dígito del SIU (a1411), corresponde el punto 1 del TP1: \emph{suma de dos números en binario}.
+
+\section{Formato y supuestos de entrada}
+Se implementa una Máquina de Turing (MT) de 2 cintas (multi-tape) definida en un archivo YAML:
+\begin{itemize}
+  \item Cinta 1: número binario $A$
+  \item Cinta 2: número binario $B$ (también se usa para escribir el resultado)
+\end{itemize}
+
+La MT opera en \emph{little-endian} (bit menos significativo primero). Por eso, el runner invierte las cadenas ingresadas en binario normal (big-endian) antes de cargar la cinta, y vuelve a invertir el resultado al finalizar.
+
+\section{Idea de la máquina}
+La suma binaria se modela con dos ``modos'' (estados):
+\begin{itemize}
+  \item \textbf{no carry}: no hay acarreo.
+  \item \textbf{carry}: hay acarreo.
+\end{itemize}
+La máquina recorre los bits desde el menos significativo hacia la izquierda, escribiendo el bit suma en la cinta 2 y actualizando el estado según el acarreo.
+
+\section{Archivos entregados}
+\begin{itemize}
+  \item \texttt{tp1/binary\_addition.yaml}: definición de la MT.
+  \item \texttt{tp1/tp1\_run\_tm.py}: runner para ejecutar y producir evidencia.
+\end{itemize}
+
+\section{Cómo correr (evidencia)}
+\begin{lstlisting}
+cd tp1
+python tp1_run_tm.py --a 1011 --b 111
+\end{lstlisting}
+La salida incluye:
+\begin{itemize}
+  \item resultado en binario (big-endian),
+  \item tapes finales (útil para captura),
+  \item cantidad de pasos.
+\end{itemize}
+
+\section{Evidencia de ejecución (local)}
+Se ejecutó el script \texttt{tp1\_run\_tm.py} con tres casos de prueba.
+
+\subsection{Caso 1: 1 + 1}
+\begin{verbatim}
+python tp1_run_tm.py --a 1 --b 1
+
+Entrada A (bin): 1
+Entrada B (bin): 1
+Resultado (bin): 10
+Tape1 final (trim): 1
+Tape2 final (trim): 10
+\end{verbatim}
+
+\subsection{Caso 2: 1111 + 1}
+\begin{verbatim}
+python tp1_run_tm.py --a 1111 --b 1
+
+Entrada A (bin): 1111
+Entrada B (bin): 1
+Resultado (bin): 10000
+Tape1 final (trim): 1111
+Tape2 final (trim): 10000
+\end{verbatim}
+
+\subsection{Caso 3: 0 + 0}
+\begin{verbatim}
+python tp1_run_tm.py --a 0 --b 0
+
+Entrada A (bin): 0
+Entrada B (bin): 0
+Resultado (bin): 0
+Tape1 final (trim): 0
+Tape2 final (trim): 0
+\end{verbatim}
+\subsection{Caso 4: 1101 + 101}
+En el simulador en línea este caso se ingresa como \texttt{1101\#101}. En la ejecución local se pasan los operandos por parámetros separados.
+
+\begin{verbatim}
+python tp1_run_tm.py --a 1101 --b 101
+============================================================
+Entrada A (bin): 1101
+Entrada B (bin): 101
+Resultado (bin): 10010
+Pasos: 10
+Tape1 final (trim): 1101
+Tape2 final (trim): 10010
+============================================================
+\end{verbatim}
+
+
+\section{Comprobación en simulador en línea}
+
+La máquina de Turing fue validada en un simulador web. Se adjunta evidencia visual de la ejecución y un enlace compartible que permite reproducir la comprobación.
+
+\subsection{Simulador y enlace}
+\begin{itemize}
+  \item Simulador: \url{https://turingmachinesimulator.com/}
+  \item Enlace (Share Link) de la máquina validada: \url{http://turingmachinesimulator.com/shared/yoxceanwzp}
+\end{itemize}
+
+\paragraph{Caso 1101\#101}: el siguiente caso se utilizó tanto para la validación en el simulador en línea como para la ejecución local.
+
+\begin{itemize}
+  \item Entrada en simulador online: \texttt{1101\#101}
+  \item Entrada en ejecución local: \texttt{--a 1101 --b 101}
+  \item Salida obtenida: \texttt{10010}
+\end{itemize}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.95\textwidth]{online_turing.png}
+  \caption{Comprobación en simulador en línea de la suma binaria con entrada \texttt{1101\#101}.}
+  \label{fig:tp1-online-1101-101}
+\end{figure}
+
+En la Figura~\ref{fig:tp1-online-1101-101} se observa el estado final de la ejecución,
+donde la cinta de salida contiene el resultado correcto de la suma.
+
+
+\section{Repositorio}
+El código fuente y evidencia se entregan vía repositorio:
+\begin{center}
+\url{https://github.com/noeliaqualindi/computing_algorithms}
+\end{center}
+
+\end{document}
