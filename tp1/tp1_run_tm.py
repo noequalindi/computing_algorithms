@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-TP1 - Máquina de Turing: suma binaria (multi-tape) en YAML.
+TP1 - Turing Machine: binary addition (multi-tape) in a YAML.
 
-Runner de 2 cintas (cinta infinita en ambos sentidos, indices enteros).
-Entrada: binario big-endian.
+Runner of 2 tapes (infinite tape in both directions, integer indices).
+Input: big-endian binary.
 
-Ejemplo:
+Example:
   python tp1_run_tm.py --a 1011 --b 111
 """
 
@@ -91,7 +91,7 @@ class MultiTapeTM:
         s2 = self.t2.read(self.h2)
         key = (self.state, s1, s2)
         if key not in self.delta:
-            raise RuntimeError(f"Transición no definida para: {key}")
+            raise RuntimeError(f"Transition not defined for: {key}")
         tr = self.delta[key]
         self.t1.write(self.h1, tr.write[0])
         self.t2.write(self.h2, tr.write[1])
@@ -105,7 +105,7 @@ class MultiTapeTM:
         while self.steps < max_steps and self.step():
             pass
         if self.state not in self.final_states:
-            raise RuntimeError(f"No halting en {max_steps} pasos. Estado actual: {self.state}")
+            raise RuntimeError(f"No halting in {max_steps} pasos. Estado actual: {self.state}")
 
     def result(self) -> str:
         s = self.t2.to_string_trimmed()
@@ -120,7 +120,7 @@ def validate_bin(s: str) -> str:
     if s == "":
         return "0"
     if any(c not in "01" for c in s):
-        raise ValueError("Solo binario 0/1.")
+        raise ValueError("Just binary 0/1.")
     s = s.lstrip("0")
     return s if s else "0"
 
