@@ -1,6 +1,6 @@
 
 # FIUBA - Maestría en Inteligencia Artificial 
-![alt text](./assets/uba.png)
+![alt text](./assets/fiuba.png)
 ## Materia: Computación, Algoritmos y Estructuras de Datos
 
 Este repositorio contiene los trabajos prácticos correspondientes a la materia **Computación, Algoritmos y Estructuras de Datos** (FIUBA – Maestría en Inteligencia Artificial).
